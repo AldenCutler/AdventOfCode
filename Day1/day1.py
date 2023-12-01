@@ -4,7 +4,7 @@ import re
 def part1():
 
     # read input file
-    file = open("input.txt", "r")
+    file = open("C:/Users/alden/Downloads/input.txt", "r")
     lines = file.readlines()
     file.close()
 
@@ -44,13 +44,14 @@ def part1():
         num = ""
         num += str(first)
         num += str(last)
+        
         # print(num)
+        # print(str(i+1) + ": " + num + "  --  " + line)    --> for debugging
         
         # concatenate the two digits into an int and add to sum
-        print(str(i+1) + ": " + num + "  --  " + line)
         sum += int(num)
-
-    print(sum)
+    return sum
+    #print(sum)
             
 
 # part 2 is similar to part 1, but digits can be spelled out as a word (one, two, three, etc.)
@@ -60,7 +61,7 @@ def part1():
 def part2():
 
     # read input file
-    file = open("input.txt", "r")
+    file = open('C:/Users/alden/Downloads/input.txt', "r")
     lines = file.readlines()
     file.close()
     
@@ -175,7 +176,8 @@ def part2():
         # concatenate the two digits into an int and add to sum
         sum += int(num)
 
-    print(sum)
+    return sum
+    #print(sum)
 
-# part1()
-# part2()
+part1()
+part2()

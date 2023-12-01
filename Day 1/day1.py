@@ -1,15 +1,15 @@
 import re
 
-# read input file
-file = open("C:/Users/alden\OneDrive - Worcester Polytechnic Institute (wpi.edu)/Documents/projects/advent of code/Day 1/input.txt", "r")
-lines = file.readlines()
-file.close()
 
 def part1():
 
+    # read input file
+    file = open("input.txt", "r")
+    lines = file.readlines()
+    file.close()
+
     sum = 0
 
-    # first int in every line is first digit, last int is second digit
     for i in range(len(lines)):
         line = lines[i]
         n = len(line)
@@ -19,19 +19,22 @@ def part1():
             line = line[:n-1]
             n -= 1
         
+        # start and end indices of each line
         j = 0
         k = n - 1
         
+        # to store first and last digits
         first = 0
         last = 0
         
-        
+        # find first digit index and store in j
         while j < n:
             if line[j].isdigit():
                 first = line[j]
                 break
             j += 1
-        
+
+        # find last digit index and store in k
         while k >= 0:
             if line[k].isdigit():
                 last = line[k]
@@ -51,11 +54,18 @@ def part1():
             
 
 # part 2 is similar to part 1, but digits can be spelled out as a word (one, two, three, etc.)
+# my approach finds the indices of all digits and then all words, and then compares the indices,
+# but you could also go through the line and replace all words with digits, and then do the same
+# thing as part 1
 def part2():
+
+    # read input file
+    file = open("input.txt", "r")
+    lines = file.readlines()
+    file.close()
     
     sum = 0
 
-    # first int in every line is first digit, last int is second digit
     for i in range(len(lines)):
         line = lines[i]
         n = len(line)
@@ -65,6 +75,7 @@ def part2():
             line = line[:n-1]
             n -= 1
         
+        # start and end indices of each line
         j = 0
         k = n - 1
         
@@ -91,37 +102,28 @@ def part2():
                 for _ in range(line.count(word)):
                     occurrences.append(word)
 
-
         first = 0
         last = 0
-        outsideIndices = []
 
         if len(indices) != 0:
             
             # if first word comes before first digit, store index of first word in outsideIndices
             if min(indices) < j:
-                outsideIndices.append(min(indices))
                 first = occurrences[indices.index(min(indices))]
             else: # otherwise, store index of first digit in outsideIndices
-                outsideIndices.append(j)
                 first = line[j]
             
             # if last word comes after last digit, store index of last word in outsideIndices
             if max(indices) > k:
-                outsideIndices.append(max(indices))
                 last = occurrences[indices.index(max(indices))]
             else: # otherwise, store index of last digit in outsideIndices
-                outsideIndices.append(k)
                 last = line[k]
 
         else: 
             first = line[j]
             last = line[k]
-            outsideIndices.append(j)
-            outsideIndices.append(k)
 
-
-        #convert words to digits
+        # convert words to digits
         if first == "zero":
             first = 0
         elif first == "one":
@@ -167,10 +169,10 @@ def part2():
         num = ""
         num += str(first)
         num += str(last)
-        # print(num)
+        
+        # print(str(i+1) + ": " + num + "  " + "j: " + str(j) + "  k: " + str(k) + "  --  " + line)     --> for debugging
         
         # concatenate the two digits into an int and add to sum
-        print(str(i+1) + ": " + num + "  " + str(outsideIndices) + "  " + "j: " + str(j) + "  k: " + str(k) + "  --  " + line)
         sum += int(num)
 
     print(sum)

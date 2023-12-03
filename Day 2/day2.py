@@ -1,24 +1,29 @@
 from collections import defaultdict
 
 # Read in the input
-ll = [x for x in open("C:/Users/alden/OneDrive - Worcester Polytechnic Institute (wpi.edu)/Documents/projects/AdventOfCode/Day 2/input.txt").read().strip().split("\n")]
+lines = [x for x in open("C:/Users/alden/OneDrive - Worcester Polytechnic Institute (wpi.edu)/Documents/projects/AdventOfCode/Day 2/input.txt").read().strip().split("\n")]
 
 def part1():
     idSum = 0
 
-    for l in ll:
-        game_id = int(l.split(":")[0].split(" ")[1])
-        l = l.split(":")[1]
-
+    for line in lines:
+        game_id = int(line.split(":")[0].split(" ")[1])
+        line = line.split(":")[1]   # Remove the game id
         possible = True
 
-        for s in l.split(";"):
+        for colors in line.split(";"):      # colors is a string of the form "2 red, 3 green, 4 blue"
             counts = defaultdict(int)
 
-            for rev in s.split(", "):
-                rev = rev.strip()
-                counts[rev.split(" ")[1]] += int(rev.split(" ")[0])
+            # Count the number of each color
+            for review in colors.split(", "):
+                
+                # Remove whitespace
+                review = review.strip() 
+                
+                # Add the number of that color to the count
+                counts[review.split(" ")[1]] += int(review.split(" ")[0])
 
+            # Check if the counts are valid
             if not (counts["red"] <= 12 and counts["green"] <= 13 and counts["blue"] <= 14):
                 possible = False
 
@@ -31,17 +36,16 @@ def part1():
 def part2():
     powerSum = 0
     
-    for l in ll:
-        l = l.split(":")[1]
-
+    for line in lines:
+        line = line.split(":")[1]
         min_counts = defaultdict(int)
 
-        for s in l.split(";"):
+        for colors in line.split(";"):
             counts = defaultdict(int)
 
-            for rev in s.split(", "):
-                rev = rev.strip()
-                counts[rev.split(" ")[1]] += int(rev.split(" ")[0])
+            for review in colors.split(", "):
+                review = review.strip()
+                counts[review.split(" ")[1]] += int(review.split(" ")[0])
 
             for k, v in counts.items():
                 min_counts[k] = max(min_counts[k], v)

@@ -7,21 +7,19 @@ void part1(FILE* fp, int* times, int* distances) {
     int ans = 1;
     for (int i = 0; i < 4; i++) {
         int record = distances[i];
-
-        // check the distance for each time from 0 to times[i]
-        //  - if the distance is greater than the record, increment ways
-        //  note: we don't need to check the distance for times[i] because that would mean we never let go of the button.
-        //        similarly, we don't need to check the distance for 0 because that would mean we never pressed the button.
-        int ways = 0;
-        for (int j = 1; j < times[i]; j++) {
-            
-            // distance = timePressed * timeRemaining
-            int dist = j * (times[i] - j);
-            if (dist > record) {
-                ways++;
-            }
-
+        int time = times[i];
+    
+        // find the lowest time that we can hold the button to beat the record
+        int lowestTime = 0;
+        while (lowestTime * (time - lowestTime) < record) {
+            lowestTime++;
         }
+
+        // find the upper bound
+        int upperBound = time - lowestTime;
+
+        // find the number of ways to beat the record
+        int ways = upperBound - lowestTime + 1;
 
         ans *= ways;
 
@@ -32,16 +30,6 @@ void part1(FILE* fp, int* times, int* distances) {
 
 void part2(FILE* fp) {
     
-    // distance now holds the record. We need to find the number of ways to beat the record.
-    // in this case, we don't need to brute force the answer:
-    // we just have to find the least amount of time we can hold the button to beat the record.
-    // the number of ways to beat the record is:
-    /*
-    upperBound = raceTime - lowestTime
-    lowerBound = lowestTime
-    ways = upperBound - lowerBound + 1
-    */
-
     // these are the values for my input, yours may be different
     long time = 46807866;
     long long distance = 214117714021024;
@@ -82,27 +70,19 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-
-    // comment out the following lines if you want to use the sample input
+    // read in the times and distances
     int* times = malloc(4 * sizeof(int));
     int* distances = malloc(4 * sizeof(int));
 
     fscanf(fp, "Time: %d %d %d %d\n", &times[0], &times[1], &times[2], &times[3]);
     fscanf(fp, "Distance: %d %d %d %d\n", &distances[0], &distances[1], &distances[2], &distances[3]);
 
-    // uncomment the following lines if you want to use the sample input
-    // int * times = malloc(3 * sizeof(int));
-    // int * distances = malloc(3 * sizeof(int));
-
-    // fscanf(fp, "Time: %d %d %d\n", &times[0], &times[1], &times[2]);
-    // fscanf(fp, "Distance: %d %d %d\n", &distances[0], &distances[1], &distances[2]);
-
+    // run the two parts
     part1(fp, times, distances);
     part2(fp);
 
-    // close file
+    // clean up
     fclose(fp);
-
-    exit(EXIT_SUCCESS);
+    return 0;
 }
 
